@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Configuration for Deployment
     // REPLACEME: When deploying, set this to your Render backend URL (e.g., https://your-backend.onrender.com)
-    const API_BASE_URL = '';
+    const API_BASE_URL = 'https://swar-backend-aumm.onrender.com';
 
     // Language Toggle
     let currentLang = 'hi';
