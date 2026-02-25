@@ -1,0 +1,13 @@
+app.py
+requirements.txt
+Procfile
+runtime.txt
+venv/
+.env
+.git
+__pycache__/
+uploads/
+static/outputs/
+*.mp3
+*.webm
+*.wav
