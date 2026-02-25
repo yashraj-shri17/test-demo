@@ -92,13 +92,24 @@ def generate():
     filepath = os.path.join(OUTPUT_DIR, filename)
 
     try:
+        print(f"Generating TTS for text: {text[:50]}... with voice: {voice}")
         asyncio.run(generate_speech_async(text, filepath, voice, pitch, rate))
+        
+        # Verify file exists and is not empty
+        if os.path.exists(filepath):
+            file_size = os.path.getsize(filepath)
+            print(f"✅ TTS Generated: {filename} ({file_size} bytes)")
+            if file_size == 0:
+                return jsonify({"error": "Generated audio is empty. Check voice/text parameters."}), 500
+        else:
+            return jsonify({"error": "Failed to save audio file."}), 500
+
         return jsonify({
             "audio_url": f"/static/outputs/{filename}",
             "filename": filename
         })
     except Exception as e:
-        print(f"TTS Error: {e}")
+        print(f"❌ TTS Error: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/static/<path:filename>")

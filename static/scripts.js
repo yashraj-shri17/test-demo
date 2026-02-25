@@ -55,8 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             if (data.audio_url) {
-                audioPlayer.src = data.audio_url;
-                downloadLink.href = data.audio_url;
+                const fullAudioUrl = `${API_BASE_URL}${data.audio_url}`;
+                audioPlayer.src = fullAudioUrl;
+                downloadLink.href = fullAudioUrl;
                 resultDiv.classList.add('visible');
                 audioPlayer.play();
             } else {
