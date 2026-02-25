@@ -36,7 +36,7 @@ This guide provides a step-by-step roadmap to deploy your **Swar Voice** applica
     *   **Start Command**: `gunicorn app:app`
 5.  **Environment Variables**: Click the **Environment** tab and add:
     *   `GROQ_API_KEY` = `your_actual_key_here`
-    *   `PYTHON_VERSION` = `3.10.x` (Recommended)
+    *   `PYTHON_VERSION` = `3.10.13` (Recommended)
 6.  **Wait for Build**: Render will deploy your app. Once finished, copy the URL (e.g., `https://swar-backend.onrender.com`).
 
 ---
