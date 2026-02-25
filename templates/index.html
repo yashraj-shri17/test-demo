@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swar - Premium AI Voice & STT</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Noto+Sans+Devanagari:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(80px);
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(99, 102, 241, 0.2);
+            top: -100px;
+            right: -100px;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(168, 85, 247, 0.2);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        @keyframes move {
+            from {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            to {
+                transform: translate(100px, 100px) rotate(360deg);
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header .hindi {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            color: var(--primary);
+        }
+
+        header p {
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group,
+        .voice-select,
+        .control-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+            position: relative;
+        }
+
+        .input-group label,
+        .voice-select label,
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .textarea-wrapper {
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            padding-right: 3.5rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .mic-btn {
+            position: absolute;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .mic-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .mic-btn.recording {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-wrapper input {
+            flex: 1;
+            accent-color: var(--primary);
+        }
+
+        .value-display {
+            min-width: 3rem;
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 0.75rem;
+            color: var(--text);
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        button.main-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        button.main-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        #result.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 1rem;
+            border-radius: 1rem;
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            margin-top: 2rem;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    <div class="container">
+        <header>
+            <h1>Swar <span class="hindi">स्वर</span></h1>
+            <p>Premium Hindi & English AI Voice with STT</p>
+        </header>
+        <div class="card">
+            <div class="input-group">
+                <label>पाठ / Text</label>
+                <div class="textarea-wrapper">
+                    <textarea id="text" placeholder="नमस्ते, आप कैसे हैं?" rows="4"></textarea>
+                    <button class="mic-btn" id="mic-btn" title="Record Voice">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                            <path
+                                d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="voice-select">
+                <label>आवाज़ / Voice</label>
+                <select id="voice">
+                    <option value="hi-IN-MadhurNeural">मधुर (Madhur) - Heavy Male Tone</option>
+                    <option value="hi-IN-SwaraNeural">स्वरा (Swara) - Natural Female</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>पिच / Pitch</label>
+                <div class="slider-wrapper">
+                    <input type="range" id="pitch" min="-50" max="50" value="0">
+                    <span class="value-display" id="pitch-val">0 Hz</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>रफ़्तार / Speed</label>
+                <div class="slider-wrapper">
+                    <input type="range" id="rate" min="-50" max="50" value="0">
+                    <span class="value-display" id="rate-val">0%</span>
+                </div>
+            </div>
+            <button id="generate" class="main-btn">
+                <span class="spinner" id="spinner"></span>
+                <span id="btn-text">आवाज़ बनाएं / Generate Speech</span>
+            </button>
+            <div id="result">
+                <audio id="audio" controls></audio>
+                <a href="#" id="download" class="download-link" download="swar_audio.mp3">ऑडियो डाउनलोड करें / Download
+                    Audio</a>
+            </div>
+        </div>
+        <footer>Built with ❤️ by Antigravity</footer>
+    </div>
+    <script src="/static/scripts.js"></script>
+</body>
+
+</html>

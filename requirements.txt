@@ -1,0 +1,7 @@
+flask
+groq
+edge-tts
+asyncio
+flask-cors
+python-dotenv
+gunicorn
